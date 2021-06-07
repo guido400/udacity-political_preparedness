@@ -3,16 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:motion="http://schemas.android.com/tools">
 
-    <!-- TODO: Add data binding node -->
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
+    </data>
     <!-- TODO: Add motion scene to hide form on vertical scroll. -->
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        app:layoutDescription="@xml/fragment_representative_scene">
 
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/search_title"
+            android:text="@string/representative_search"
+            style= "@style/TextStyle.Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +28,8 @@
         <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/address_line_1"
+            android:text="@={viewModel.address}"
+            style= "@style/TextStyle.Normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
@@ -33,6 +41,8 @@
         <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/address_line_2"
+            style= "@style/TextStyle.Normal"
+            android:text="@={viewModel.address}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:autofillHints=""
@@ -44,6 +54,8 @@
         <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/city"
+            android:text="@={viewModel.address}"
+            style= "@style/TextStyle.Normal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
@@ -70,6 +82,8 @@
         <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/zip"
+            style= "@style/TextStyle.Normal"
+            android:text="@={viewModel.address}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
@@ -79,9 +93,11 @@
             app:layout_constraintEnd_toEndOf="@id/city"
             app:layout_constraintTop_toBottomOf="@id/city" />
 
-        <!-- TODO: Add visual styling and label -->
+
         <Button
             android:id="@+id/button_search"
+            style="@style/PrimaryButton"
+            android:text="@string/find_my_representatives"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/zip" />
@@ -89,6 +105,8 @@
         <!-- TODO: Add visual styling and content -->
         <Button
             android:id="@+id/button_location"
+            style="@style/PrimaryButton"
+            android:text="@string/use_my_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
@@ -96,12 +114,19 @@
         <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/representative_title"
+            android:text="@string/my_representatives"
+            style="@style/TextStyle.Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_location" />
 
-        <!-- TODO: Add Representatives RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/representative_title" />
+
 
         <!-- TODO: Add visual styling and content -->
         <TextView

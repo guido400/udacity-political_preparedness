@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 class RepresentativeViewModel: ViewModel() {
 
     //TODO: Establish live data for representatives and address
+    var address:String = ""
 
     //TODO: Create function to fetch representatives from API from a provided address
 
