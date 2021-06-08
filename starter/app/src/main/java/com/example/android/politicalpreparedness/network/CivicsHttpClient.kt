@@ -1,12 +1,15 @@
 package com.example.android.politicalpreparedness.network
 
+import android.content.res.Resources
+import com.example.android.politicalpreparedness.MyApplication
+import com.example.android.politicalpreparedness.R
 import okhttp3.OkHttpClient
 
 class CivicsHttpClient: OkHttpClient() {
 
     companion object {
 
-        const val API_KEY = "" //TODO: Place your API Key Here
+        val apiKey = MyApplication().applicationContext.getString(R.string.civics_api_key)
 
         fun getClient(): OkHttpClient {
             return Builder()
@@ -15,7 +18,7 @@ class CivicsHttpClient: OkHttpClient() {
                         val url = original
                                 .url()
                                 .newBuilder()
-                                .addQueryParameter("key", API_KEY)
+                                .addQueryParameter("key", apiKey)
                                 .build()
                         val request = original
                                 .newBuilder()
