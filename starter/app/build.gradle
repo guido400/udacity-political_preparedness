@@ -22,6 +22,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        applicationVariants.all { variant ->
+            variant.buildConfigField "String", "API_KEY", "\""+getApiKey()+"\""
+        }
     }
     androidExtensions {
         experimental = true
@@ -33,6 +36,12 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+}
+
+static def getApiKey(){
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props['API_KEY']
 }
 
 dependencies {
@@ -69,6 +78,9 @@ dependencies {
 
     // Glide
     //TODO: Add Glide Implementation
+
+    //timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Room
     implementation "androidx.room:room-runtime:$version_room"

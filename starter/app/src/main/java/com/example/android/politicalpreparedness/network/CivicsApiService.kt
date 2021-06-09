@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.network
 
+import androidx.lifecycle.LiveData
 import com.example.android.politicalpreparedness.network.jsonadapter.ElectionAdapter
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
@@ -16,10 +17,12 @@ import java.util.*
 
 private const val BASE_URL = "https://www.googleapis.com/civicinfo/v2/"
 
+enum class ApiStatus { LOADING, ERROR, DONE }
+
 private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .add(ElectionAdapter())
-        .add(Rfc3339DateJsonAdapter())
+        .add(Date::class.java,Rfc3339DateJsonAdapter().nullSafe())
         .build()
 
 private val retrofit = Retrofit.Builder()
@@ -36,13 +39,13 @@ private val retrofit = Retrofit.Builder()
 interface CivicsApiService {
 
     @GET("elections")
-    suspend fun getElections( ): ElectionResponse
+    suspend fun getElections( ): LiveData<List<Election>>
 
     @GET("voterinfo")
-    suspend fun getVoterInfo() : VoterInfoResponse
+    suspend fun getVoterInfo() : LiveData<VoterInfoResponse>
 
     @GET("representatives")
-    suspend fun getRepresentatives() : RepresentativeResponse
+    suspend fun getRepresentatives() : LiveData<RepresentativeResponse>
 
 }
 

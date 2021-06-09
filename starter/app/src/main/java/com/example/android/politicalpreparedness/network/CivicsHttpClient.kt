@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.network
 
+import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.MyApplication
 import com.example.android.politicalpreparedness.R
 import okhttp3.OkHttpClient
@@ -8,7 +9,7 @@ class CivicsHttpClient: OkHttpClient() {
 
     companion object {
 
-        private val apiKey = MyApplication().applicationContext.getString(R.string.civics_api_key)
+        private val apiKey = BuildConfig.API_KEY
 
         fun getClient(): OkHttpClient {
             return Builder()

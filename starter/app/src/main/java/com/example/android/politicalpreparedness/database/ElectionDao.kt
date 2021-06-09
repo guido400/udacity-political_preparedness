@@ -13,11 +13,11 @@ interface ElectionDao {
 
     //TODO: Add select all election query
     @Query("SELECT * FROM election_table ORDER BY electionDay DESC")
-    fun getAllNights(): LiveData<List<Election>>
+    fun getAllElections(): LiveData<List<Election>>
 
     //TODO: Add select single election query
     @Query("SELECT * FROM election_table WHERE id = :id ")
-    suspend fun get(id:Int): Election
+    suspend fun get(id:Int): Election?
 
     //TODO: Add delete query
     @Delete
