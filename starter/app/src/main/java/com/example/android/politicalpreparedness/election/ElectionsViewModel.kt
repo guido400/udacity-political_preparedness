@@ -53,7 +53,7 @@ class ElectionsViewModel(private val repository: ElectionRepository): ViewModel(
         viewModelScope.launch{
             _apiStatus.value = ApiStatus.LOADING
             try {
-                _upcomingElections.value = repository.getComingElections().value
+                _upcomingElections.value = repository.getComingElections()
                 _apiStatus.value = ApiStatus.DONE
             } catch (e: Exception) {
                 _apiStatus.value = ApiStatus.ERROR

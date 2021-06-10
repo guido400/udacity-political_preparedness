@@ -20,9 +20,9 @@ private const val BASE_URL = "https://www.googleapis.com/civicinfo/v2/"
 enum class ApiStatus { LOADING, ERROR, DONE }
 
 private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
         .add(ElectionAdapter())
         .add(Date::class.java,Rfc3339DateJsonAdapter().nullSafe())
+        .add(KotlinJsonAdapterFactory())
         .build()
 
 private val retrofit = Retrofit.Builder()
@@ -39,13 +39,13 @@ private val retrofit = Retrofit.Builder()
 interface CivicsApiService {
 
     @GET("elections")
-    suspend fun getElections( ): LiveData<List<Election>>
+    suspend fun getElections( ): ElectionResponse
 
     @GET("voterinfo")
-    suspend fun getVoterInfo() : LiveData<VoterInfoResponse>
+    suspend fun getVoterInfo() : VoterInfoResponse
 
     @GET("representatives")
-    suspend fun getRepresentatives() : LiveData<RepresentativeResponse>
+    suspend fun getRepresentatives() :RepresentativeResponse
 
 }
 

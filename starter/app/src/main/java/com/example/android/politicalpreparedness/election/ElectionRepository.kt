@@ -9,8 +9,11 @@ import com.example.android.politicalpreparedness.network.models.Election
 class ElectionRepository(private val dao: ElectionDao) {
     val savedElections = dao.getAllElections()
 
-    suspend fun getComingElections(): LiveData<List<Election>> {
-        return CivicsApi.retrofitService.getElections()
+    lateinit var x: List<Election>
+
+    suspend fun getComingElections(): List<Election> {
+        x = CivicsApi.retrofitService.getElections().elections
+        return CivicsApi.retrofitService.getElections().elections
     }
 
     suspend fun saveElection(election: Election) {
