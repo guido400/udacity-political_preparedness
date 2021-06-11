@@ -11,7 +11,6 @@ import com.example.android.politicalpreparedness.network.models.VoterInfoRespons
 class ElectionRepository(private val dao: ElectionDao) {
 
     val savedElections = dao.getAllElections()
-    var x: VoterInfoResponse? = null
 
     suspend fun getComingElections(): List<Election> {
         return CivicsApi.retrofitService.getElections().elections
@@ -25,18 +24,18 @@ class ElectionRepository(private val dao: ElectionDao) {
         return dao.get(id)
     }
 
+    suspend fun removeElection(election: Election){
+        return dao.delete(election)
+    }
+
     suspend fun getVoterInfo(electionId: Int, division: Division): VoterInfoResponse {
         val state = division.state
 
-       if (division.state == "") {
-            x = CivicsApi.retrofitService.getVoterInfo(electionId, "fl")
-           val y = 1
+       return if (division.state == "") {
+           CivicsApi.retrofitService.getVoterInfo(electionId, "fl")
         } else {
-            x = CivicsApi.retrofitService.getVoterInfo(electionId, state)
-
+            CivicsApi.retrofitService.getVoterInfo(electionId, state)
         }
-
-        return x as VoterInfoResponse
     }
 
 }

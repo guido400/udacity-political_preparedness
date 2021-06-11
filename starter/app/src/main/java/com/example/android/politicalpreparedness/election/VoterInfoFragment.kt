@@ -65,14 +65,13 @@ class VoterInfoFragment : Fragment() {
         //TODO: cont'd Handle save button clicks
 
         return binding.root
-
     }
 
-
-    fun openUrlInBrowser (url:String) {
+    private fun openUrlInBrowser (url:String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         this.startActivity(intent)
     }
+
 
 }

@@ -24,13 +24,10 @@ class VoterInfoViewModel(private val dataSource: ElectionRepository, private val
     val election: LiveData<Election>
         get() = _election
 
-    private val _votingLocation = MutableLiveData<String>()
-    val votingLocation: LiveData<String>
-        get() = _votingLocation
+    private lateinit var votingLocation:String
 
-    private val _ballotInformation = MutableLiveData<String>()
-    val ballotInformation: LiveData<String>
-        get() = _ballotInformation
+    private lateinit var ballotInformation:String
+
 
     private val _webLink= MutableLiveData<String>()
     val webLink: LiveData<String>
@@ -61,8 +58,8 @@ class VoterInfoViewModel(private val dataSource: ElectionRepository, private val
                 val voterInfoResponse = dataSource.getVoterInfo(electionId, division)
 
                 _election.value = voterInfoResponse.election
-                _votingLocation.value = voterInfoResponse.state?.get(0)?.electionAdministrationBody?.electionInfoUrl
-                _ballotInformation.value = voterInfoResponse.state?.get(0)?.electionAdministrationBody?.ballotInfoUrl
+                votingLocation = voterInfoResponse.state?.get(0)?.electionAdministrationBody?.electionInfoUrl ?: ""
+                ballotInformation = voterInfoResponse.state?.get(0)?.electionAdministrationBody?.ballotInfoUrl ?: ""
 
 
                 _apiStatus.value = ApiStatus.DONE
@@ -76,22 +73,38 @@ class VoterInfoViewModel(private val dataSource: ElectionRepository, private val
 
     //TODO: Add var and methods to support loading URLs
     fun navigateToVotingLocations (view: View){
-
+        _webLink.value = votingLocation
     }
 
     fun navigateToBallotInformation (view: View){
-
+        _webLink.value = ballotInformation
     }
 
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
-    fun getSavedState():Int {
-        return R.string.follow_election
+    fun setFollowStatus (view:View) {
+        if (savedState.value == false) {
+           followElection()
+            _savedState.value = true
+        }
+        else {
+            unfollowElection()
+            _savedState.value = false
+        }
     }
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
+
+    private fun followElection () {
+        viewModelScope.launch {
+            dataSource.saveElection(election.value!!)
+            _savedState.value = true
+        }
+    }
+
+    private fun unfollowElection () {
+        viewModelScope.launch {
+            if (election.value != null) {
+                dataSource.removeElection(election.value!!)
+            }
+            _savedState.value = false
+        }
+    }
 
 }
