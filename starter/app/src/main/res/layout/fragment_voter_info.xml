@@ -17,12 +17,14 @@
         <!-- TODO: Add title to toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/election_name"
-            tools:text="Wisconsin Presidential Primary Election"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             android:padding="@dimen/default_padding"
             android:singleLine="true"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="@color/white"
+            tools:title="Wisconsin Presidential Primary Election" />
 
         <TextView
             android:id="@+id/election_date"
@@ -93,7 +95,6 @@
             android:layout_marginBottom="16dp"
             tools:text="Follow Election"
             style="@style/PrimaryButton"
-            android:text="@{viewModel.savedState}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
