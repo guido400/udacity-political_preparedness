@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:motion="http://schemas.android.com/tools">
 
-
     <data>
         <variable
             name="viewModel"
@@ -11,6 +10,7 @@
     </data>
     <!-- TODO: Add motion scene to hide form on vertical scroll. -->
     <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id = "@+id/motion_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         app:layoutDescription="@xml/fragment_representative_scene">
@@ -29,10 +29,10 @@
         <EditText
             android:id="@+id/address_line_1"
             android:text="@={viewModel.address}"
-            style= "@style/TextStyle.Normal"
+            android:hint="@string/address_line_1"
+            style= "@style/TextStyle.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints=""
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
@@ -41,11 +41,11 @@
         <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/address_line_2"
-            style= "@style/TextStyle.Normal"
+            style= "@style/TextStyle.Large"
+            android:hint="@string/address_line_2"
             android:text="@={viewModel.address}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:autofillHints=""
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_1" />
@@ -55,10 +55,10 @@
         <EditText
             android:id="@+id/city"
             android:text="@={viewModel.address}"
-            style= "@style/TextStyle.Normal"
+            style= "@style/TextStyle.Large"
+            android:hint="@string/city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints=""
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/state"
@@ -69,9 +69,9 @@
         <!-- TODO: Add visual styling and content -->
         <Spinner
             android:id="@+id/state"
+            android:color="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:autofillHints=""
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toEndOf="@id/city"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,11 +82,11 @@
         <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/zip"
-            style= "@style/TextStyle.Normal"
+            style= "@style/TextStyle.Large"
             android:text="@={viewModel.address}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints=""
+            android:hint="@string/zip"
             android:inputType="number"
             android:maxLength="5"
             app:layout_constraintStart_toStartOf="parent"
@@ -122,11 +122,11 @@
             app:layout_constraintTop_toBottomOf="@id/button_location" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/representative_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/representative_title" />
-
 
         <!-- TODO: Add visual styling and content -->
         <TextView

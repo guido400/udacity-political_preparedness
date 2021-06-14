@@ -7,6 +7,8 @@ class RepresentativeViewModel: ViewModel() {
     //TODO: Establish live data for representatives and address
     var address:String = ""
 
+    var state:String = ""
+
     //TODO: Create function to fetch representatives from API from a provided address
 
     /**
