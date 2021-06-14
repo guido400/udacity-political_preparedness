@@ -16,6 +16,7 @@
     <string name="find_my_representatives">Find my representatives</string>
     <string name="use_my_location">Use my location</string>
     <string name="my_representatives">My Representatives</string>
+    <string name="loading_spinner">loading spinner</string>
 
     <!-- TODO: Add necessary string values -->
 

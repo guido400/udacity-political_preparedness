@@ -72,15 +72,15 @@ class VoterInfoViewModel(private val dataSource: ElectionRepository, private val
 
 
     //TODO: Add var and methods to support loading URLs
-    fun navigateToVotingLocations (view: View){
+    fun navigateToVotingLocations (){
         _webLink.value = votingLocation
     }
 
-    fun navigateToBallotInformation (view: View){
+    fun navigateToBallotInformation (){
         _webLink.value = ballotInformation
     }
 
-    fun setFollowStatus (view:View) {
+    fun setFollowStatus () {
         if (savedState.value == false) {
            followElection()
             _savedState.value = true

@@ -4,19 +4,17 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.android.politicalpreparedness.MyApplication
 import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
 
 class VoterInfoFragment : Fragment() {
 
-    lateinit var viewModel: VoterInfoViewModel
+    lateinit var voterInfoViewModel: VoterInfoViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -35,14 +33,16 @@ class VoterInfoFragment : Fragment() {
             args.argElectionId,
             args.argDivision)
 
-        viewModel = ViewModelProvider(this, viewModelFactory)
+        voterInfoViewModel = ViewModelProvider(this, viewModelFactory)
             .get(VoterInfoViewModel::class.java)
 
-        viewModel.webLink.observe(this, Observer { link ->
+        binding.viewModel = voterInfoViewModel
+
+        voterInfoViewModel.webLink.observe(this, Observer { link ->
             openUrlInBrowser(link)
         })
 
-        viewModel.savedState.observe(this, Observer { savedState ->
+        voterInfoViewModel.savedState.observe(this, Observer { savedState ->
             binding.button.text = if (savedState) {
                 getString(R.string.unfollow_election)
             } else {
@@ -50,7 +50,7 @@ class VoterInfoFragment : Fragment() {
             }
         })
 
-        viewModel.election.observe(this, Observer { election ->
+        voterInfoViewModel.election.observe(this, Observer { election ->
             binding.electionName.title = election.name
             binding.electionDate.text = election.electionDay.toString()
         })

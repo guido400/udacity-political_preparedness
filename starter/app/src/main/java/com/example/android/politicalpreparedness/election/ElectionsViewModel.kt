@@ -27,19 +27,6 @@ class ElectionsViewModel(private val repository: ElectionRepository): ViewModel(
 
     init {
         getUpcomingElections()
-
-        viewModelScope.launch {
-            if (repository.getElection(1000) == null) {
-                repository.saveElection(
-                    Election(
-                        1000,
-                        "test",
-                        Date(),
-                        Division("1000", "USA", "fl")
-                    )
-                )
-            }
-        }
     }
 
     private fun getUpcomingElections () {

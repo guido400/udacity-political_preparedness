@@ -15,7 +15,7 @@
     <path android:fillColor="#d0d0d4"
         android:pathData="M32.77,29.99L34.4,32.81"
         android:strokeColor="#ededed" android:strokeLineCap="round" android:strokeWidth="1"/>
-    <path android:fillColor="#949497"
+    <path android:fillColor="#9C27B0"
         android:pathData="M30.1,32.42L32.92,34.05"
         android:strokeColor="#525252" android:strokeLineCap="round" android:strokeWidth="1"/>
     <path android:fillColor="#97979b"

@@ -14,6 +14,19 @@
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
+        <ImageView
+            android:id="@+id/status_image"
+            tools:visibility="visible"
+            tools:src="@drawable/loading_animation"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:apiStatus="@{viewModel.apiStatus}"
+            android:contentDescription="@string/loading_spinner" />
+
         <!-- TODO: Add title to toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/election_name"
@@ -48,7 +61,7 @@
         <TextView
             android:id="@+id/state_locations"
             android:text="@string/voting_locations"
-            android:onClick="@{viewModel.navigateToVotingLocations}"
+            android:onClick="@{() -> viewModel.navigateToVotingLocations()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/state_header"
@@ -60,7 +73,7 @@
             android:layout_height="wrap_content"
             style="@style/TextStyle.Normal"
             android:text="@string/ballot_information"
-            android:onClick="@{viewModel.navigateToBallotInformation}"
+            android:onClick="@{() -> viewModel.navigateToBallotInformation()}"
             app:layout_constraintTop_toBottomOf="@id/state_locations"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
@@ -93,7 +106,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:onClick="@{viewModel.setFollowStatus}"
+            android:onClick="@{() -> viewModel.setFollowStatus()}"
             tools:text="Follow Election"
             style="@style/PrimaryButton"
             app:layout_constraintBottom_toBottomOf="parent"
