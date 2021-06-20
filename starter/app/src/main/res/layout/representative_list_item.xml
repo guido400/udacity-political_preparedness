@@ -15,6 +15,7 @@
 
         <ImageView
             android:id="@+id/representative_photo"
+            app:profileImage="@{representative.official.photoUrl}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -29,6 +30,7 @@
         <TextView
             android:id="@+id/text_representative_office"
             style="@style/TextStyle.Large"
+            android:text="@{representative.office.name}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -39,6 +41,7 @@
 
         <TextView
             android:id="@+id/text_representative_name"
+            android:text="@{representative.official.name}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -50,6 +53,7 @@
 
         <TextView
             android:id="@+id/text_representative_party"
+            android:text="@{representative.official.party}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

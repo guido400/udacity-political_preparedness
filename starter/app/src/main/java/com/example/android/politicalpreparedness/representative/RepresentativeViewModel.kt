@@ -1,29 +1,87 @@
 package com.example.android.politicalpreparedness.representative
 
+import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.network.ApiStatus
+import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.representative.model.RepresentativeRepository
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class RepresentativeViewModel: ViewModel() {
+class RepresentativeViewModel(private val repository: RepresentativeRepository): ViewModel() {
 
-    //TODO: Establish live data for representatives and address
-    var address:String = ""
+    var addressLineOne = ObservableField<String?>()
+    var addressLineTwo= ObservableField<String?>()
+    var city = ObservableField<String?>()
+    var zip = ObservableField<String?>()
 
-    var state:String = ""
+    var state = MutableLiveData<String>()
 
-    //TODO: Create function to fetch representatives from API from a provided address
+    var locationAddress: Address? = null
 
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
+    val showSnackBarRes = MutableLiveData<Int>()
 
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
 
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
+    private val _apiStatus= MutableLiveData<ApiStatus>()
+    val apiStatus: LiveData<ApiStatus>
+        get() = _apiStatus
 
-     */
+    private val _representatives= MutableLiveData<List<Representative>>()
+    val representatives: LiveData<List<Representative>>
+        get() = _representatives
 
-    //TODO: Create function get address from geo location
 
-    //TODO: Create function to get address from individual fields
+    fun getRepresentatives () {
+        if (validateAddress()) {
+            val address = getAddressFromFields()
+
+            viewModelScope.launch {
+
+                _apiStatus.value = ApiStatus.LOADING
+                try {
+                    _representatives.value = repository.getRepresentatives(address)
+
+                    _apiStatus.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _apiStatus.value = ApiStatus.ERROR
+                    Timber.e("Failure: ${e.message}")
+                }
+            }
+        }
+    }
+
+    fun getAddressFromGeoLocation () {
+        locationAddress?.let {
+            addressLineOne.set(it.line1)
+            addressLineTwo.set( it.line2)
+            city.set(it.city)
+            zip.set(it.zip)
+            state.value = it.state
+        }
+    }
+
+    private fun getAddressFromFields ():String {
+        return "${addressLineTwo.get()} ${addressLineOne.get()}, ${city.get()}, ${state.value} ${zip.get()}"
+    }
+
+    private fun validateAddress ():Boolean {
+
+        if (addressLineOne.get().isNullOrEmpty() ||
+            addressLineTwo.get().isNullOrEmpty() ||
+            city.get().isNullOrEmpty() ||
+            zip.get().isNullOrEmpty() ||
+            state.value.isNullOrEmpty()
+        ) {
+            showSnackBarRes.value = R.string.address_fields_empty_message
+            return false
+        } else {
+            return true
+        }
+    }
 
 }

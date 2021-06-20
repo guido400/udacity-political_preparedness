@@ -8,6 +8,11 @@
             name="viewModel"
             type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
     </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <!-- TODO: Add motion scene to hide form on vertical scroll. -->
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id = "@+id/motion_layout"
@@ -24,11 +29,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/address_line_1"
-            android:text="@={viewModel.address}"
+            android:text="@={viewModel.addressLineOne}"
             android:hint="@string/address_line_1"
             style= "@style/TextStyle.Large"
             android:layout_width="match_parent"
@@ -37,24 +40,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/address_line_2"
             style= "@style/TextStyle.Large"
             android:hint="@string/address_line_2"
-            android:text="@={viewModel.address}"
+            android:text="@={viewModel.addressLineTwo}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_1" />
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/city"
-            android:text="@={viewModel.address}"
+            android:text="@={viewModel.city}"
             style= "@style/TextStyle.Large"
             android:hint="@string/city"
             android:layout_width="0dp"
@@ -64,9 +63,6 @@
             app:layout_constraintEnd_toStartOf="@id/state"
             app:layout_constraintTop_toBottomOf="@id/address_line_2" />
 
-        <!-- TODO: Add default values from provided resources  -->
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <Spinner
             android:id="@+id/state"
             android:color="@color/colorPrimaryDark"
@@ -78,12 +74,10 @@
             app:layout_constraintTop_toTopOf="@id/city"
             app:layout_constraintBottom_toBottomOf="@id/city"/>
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/zip"
             style= "@style/TextStyle.Large"
-            android:text="@={viewModel.address}"
+            android:text="@={viewModel.zip}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/zip"
@@ -93,7 +87,6 @@
             app:layout_constraintEnd_toEndOf="@id/city"
             app:layout_constraintTop_toBottomOf="@id/city" />
 
-
         <Button
             android:id="@+id/button_search"
             style="@style/PrimaryButton"
@@ -102,7 +95,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/zip" />
 
-        <!-- TODO: Add visual styling and content -->
         <Button
             android:id="@+id/button_location"
             style="@style/PrimaryButton"
@@ -111,7 +103,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
 
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/representative_title"
             android:text="@string/my_representatives"
@@ -125,10 +116,11 @@
             android:id="@+id/representative_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:paddingBottom="170dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/representative_title" />
 
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/list_placeholder"
             android:layout_width="match_parent"
@@ -141,4 +133,20 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/status_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/loading_spinner"
+                app:apiStatus="@{viewModel.apiStatus}"
+                motion:src="@drawable/loading_animation"
+                motion:visibility="visible" />
+        </LinearLayout>
+  </RelativeLayout>
 </layout>
