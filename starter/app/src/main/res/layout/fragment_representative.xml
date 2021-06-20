@@ -18,6 +18,7 @@
         android:id = "@+id/motion_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+
         app:layoutDescription="@xml/fragment_representative_scene">
 
         <TextView
@@ -116,7 +117,6 @@
             android:id="@+id/representative_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingBottom="170dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/representative_title" />
@@ -144,6 +144,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/loading_spinner"
+                android:translationZ="1000dp"
                 app:apiStatus="@{viewModel.apiStatus}"
                 motion:src="@drawable/loading_animation"
                 motion:visibility="visible" />

@@ -49,9 +49,6 @@ class ElectionsFragment: Fragment() {
         binding.recyclerviewSaved.adapter = adapterSaved
         binding.recyclerviewUpcoming.adapter = adapterUpcoming
 
-        //TODO: Link elections to voter info
-
-
         viewModel.savedElections.observe(viewLifecycleOwner, Observer {  it?.let {
             adapterSaved.submitList(it)
         }

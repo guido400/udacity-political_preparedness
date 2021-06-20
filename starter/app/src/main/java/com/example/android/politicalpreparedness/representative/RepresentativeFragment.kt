@@ -99,7 +99,9 @@ class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 getLocation()
             }
         }
-        binding.buttonSearch.setOnClickListener { representativeViewModel.getRepresentatives() }
+        binding.buttonSearch.setOnClickListener {
+            representativeViewModel.getRepresentatives()
+        }
 
         val listAdapter = RepresentativeListAdapter()
         binding.representativeList.adapter = listAdapter

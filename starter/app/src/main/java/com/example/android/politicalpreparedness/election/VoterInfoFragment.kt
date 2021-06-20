@@ -26,7 +26,6 @@ class VoterInfoFragment : Fragment() {
         val binding = FragmentVoterInfoBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
-        //TODO: Add ViewModel values and create ViewModel
         val application =  requireActivity().application as MyApplication
 
         val viewModelFactory = VoterInfoViewModelFactory(application.getElectionRepositoryInstance(),
@@ -55,14 +54,6 @@ class VoterInfoFragment : Fragment() {
             binding.electionDate.text = election.electionDay.toString()
         })
 
-        //TODO: Populate voter info -- hide views without provided data.
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-        */
-
-
-        //TODO: Handle save button UI state
-        //TODO: cont'd Handle save button clicks
 
         return binding.root
     }

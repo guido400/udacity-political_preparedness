@@ -19,7 +19,6 @@ import java.util.*
 
 class VoterInfoViewModel(private val dataSource: ElectionRepository, private val electionId:Int, private val division: Division) : ViewModel() {
 
-    //TODO: Add live data to hold voter info
     private val _election = MutableLiveData<Election>()
     val election: LiveData<Election>
         get() = _election
@@ -50,7 +49,6 @@ class VoterInfoViewModel(private val dataSource: ElectionRepository, private val
         }
     }
 
-    //TODO: Add var and methods to populate voter info
     private fun getVoterInfo() {
         viewModelScope.launch {
             _apiStatus.value = ApiStatus.LOADING
@@ -70,8 +68,6 @@ class VoterInfoViewModel(private val dataSource: ElectionRepository, private val
         }
     }
 
-
-    //TODO: Add var and methods to support loading URLs
     fun navigateToVotingLocations (){
         _webLink.value = votingLocation
     }
