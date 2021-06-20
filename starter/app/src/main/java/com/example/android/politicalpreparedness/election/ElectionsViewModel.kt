@@ -5,15 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.network.ApiStatus
-import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 
-class ElectionsViewModel(private val repository: ElectionRepository): ViewModel() {
+class ElectionsViewModel(private val repository: ElectionRepository) : ViewModel() {
 
-    private val _upcomingElections= MutableLiveData<List<Election>>()
+    private val _upcomingElections = MutableLiveData<List<Election>>()
     val upcomingElections: LiveData<List<Election>>
         get() = _upcomingElections
 
@@ -21,7 +19,7 @@ class ElectionsViewModel(private val repository: ElectionRepository): ViewModel(
     val savedElections = repository.savedElections
 
 
-    private val _apiStatus= MutableLiveData<ApiStatus>()
+    private val _apiStatus = MutableLiveData<ApiStatus>()
     val apiStatus: LiveData<ApiStatus>
         get() = _apiStatus
 
@@ -29,9 +27,8 @@ class ElectionsViewModel(private val repository: ElectionRepository): ViewModel(
         getUpcomingElections()
     }
 
-    private fun getUpcomingElections () {
-
-        viewModelScope.launch{
+    private fun getUpcomingElections() {
+        viewModelScope.launch {
             _apiStatus.value = ApiStatus.LOADING
             try {
                 _upcomingElections.value = repository.getComingElections()

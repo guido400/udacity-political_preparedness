@@ -3,7 +3,9 @@ package com.example.android.politicalpreparedness.election
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,21 +18,24 @@ class VoterInfoFragment : Fragment() {
 
     lateinit var voterInfoViewModel: VoterInfoViewModel
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        val args:VoterInfoFragmentArgs by navArgs()
-
+        val args: VoterInfoFragmentArgs by navArgs()
 
         val binding = FragmentVoterInfoBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
-        val application =  requireActivity().application as MyApplication
+        val application = requireActivity().application as MyApplication
 
-        val viewModelFactory = VoterInfoViewModelFactory(application.getElectionRepositoryInstance(),
+        val viewModelFactory = VoterInfoViewModelFactory(
+            application.getElectionRepositoryInstance(),
             args.argElectionId,
-            args.argDivision)
+            args.argDivision
+        )
 
         voterInfoViewModel = ViewModelProvider(this, viewModelFactory)
             .get(VoterInfoViewModel::class.java)
@@ -58,7 +63,12 @@ class VoterInfoFragment : Fragment() {
         return binding.root
     }
 
-    private fun openUrlInBrowser (url:String) {
+    /**
+     * Open url in browser
+     *
+     * @param url
+     */
+    private fun openUrlInBrowser(url: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         this.startActivity(intent)

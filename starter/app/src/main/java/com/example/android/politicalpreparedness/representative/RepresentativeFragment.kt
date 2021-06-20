@@ -2,22 +2,18 @@ package com.example.android.politicalpreparedness.representative
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
-import android.view.*
-import android.view.inputmethod.InputMethodManager
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.politicalpreparedness.R
@@ -28,27 +24,42 @@ import com.example.android.politicalpreparedness.representative.model.Representa
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-import java.util.Locale
+import java.util.*
 
-class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
+/**
+ * Detail fragment
+ *
+ * @constructor Create empty Detail fragment
+ */
+class RepresentativeFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
-    lateinit var binding:FragmentRepresentativeBinding
+
+    lateinit var binding: FragmentRepresentativeBinding
 
     companion object {
         private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
     }
 
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    private lateinit var locationRequest:LocationRequest
-  
+    private lateinit var locationRequest: LocationRequest
 
+    private lateinit var representativeViewModel: RepresentativeViewModel
 
-    lateinit var representativeViewModel: RepresentativeViewModel
-
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    /**
+     * On create view
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = FragmentRepresentativeBinding.inflate(inflater)
         binding.lifecycleOwner = this
@@ -93,9 +104,9 @@ class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         binding.buttonLocation.setOnClickListener {
             if (!isPermissionGranted()) {
-                representativeViewModel.showSnackBarRes.value = R.string.grant_location_permission_for_this_functionality
-            }
-            else {
+                representativeViewModel.showSnackBarRes.value =
+                    R.string.grant_location_permission_for_this_functionality
+            } else {
                 getLocation()
             }
         }
@@ -106,9 +117,10 @@ class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val listAdapter = RepresentativeListAdapter()
         binding.representativeList.adapter = listAdapter
 
-        representativeViewModel.representatives.observe(viewLifecycleOwner, Observer {  it?.let {
-            listAdapter.submitList(it)
-        }
+        representativeViewModel.representatives.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                listAdapter.submitList(it)
+            }
         })
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -124,38 +136,62 @@ class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
         return binding.root
     }
 
+    /**
+     * On resume
+     *
+     */
     override fun onResume() {
         super.onResume()
         if (isPermissionGranted()) startLocationUpdates()
     }
 
+    /**
+     * On pause
+     *
+     */
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
     }
 
 
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    /**
+     * On request permissions result: if no permission show snackbar else start location updates
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-            when (requestCode) {
-                REQUEST_TURN_DEVICE_LOCATION_ON -> {
-                    if (grantResults.isEmpty() ||
-                                grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                        representativeViewModel.showSnackBarRes.value = R.string.location_search_not_be_used
-                    }
-                    else {
-                        startLocationUpdates()
-                    }
-                    return
+        when (requestCode) {
+            REQUEST_TURN_DEVICE_LOCATION_ON -> {
+                if (grantResults.isEmpty() ||
+                    grantResults[0] != PackageManager.PERMISSION_GRANTED
+                ) {
+                    representativeViewModel.showSnackBarRes.value =
+                        R.string.location_search_not_be_used
+                } else {
+                    startLocationUpdates()
                 }
-                else -> {
-                    // Ignore all other requests.
-                }
+                return
+            }
+            else -> {
+                // Ignore all other requests.
             }
         }
+    }
 
+    /**
+     * Check location permissions
+     *
+     * @return
+     */
     private fun checkLocationPermissions(): Boolean {
         return if (isPermissionGranted()) {
             true
@@ -171,7 +207,12 @@ class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun isPermissionGranted() : Boolean {
+    /**
+     * Is permission granted
+     *
+     * @return
+     */
+    private fun isPermissionGranted(): Boolean {
         return ActivityCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -181,44 +222,79 @@ class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    /**
+     * Get location from fused client, then send address components to edit text fields via viewmodel
+     *
+     */
     @SuppressLint("MissingPermission")
     private fun getLocation() {
         if (isPermissionGranted()) {
 
-            fusedLocationClient.requestLocationUpdates(locationRequest,
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
                 locationCallback,
-                Looper.getMainLooper())
+                Looper.getMainLooper()
+            )
 
 
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location?  ->
+                .addOnSuccessListener { location: Location? ->
                     val address = location?.let { geoCodeLocation(it) }
                     representativeViewModel.locationAddress = address
                     representativeViewModel.getAddressFromGeoLocation()
                 }
-                .addOnFailureListener { Timber.e(it.localizedMessage)  }
+                .addOnFailureListener { Timber.e(it.localizedMessage) }
         }
     }
 
+    /**
+     * Create Address instance from geo location
+     *
+     * @param location
+     * @return
+     */
     private fun geoCodeLocation(location: Location): Address {
         val geocoder = Geocoder(context, Locale.getDefault())
         return geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                .map { address ->
-                    Address(address.thoroughfare, address.subThoroughfare, address.locality, address.adminArea, address.postalCode)
-                }
-                .first()
+            .map { address ->
+                Address(
+                    address.thoroughfare,
+                    address.subThoroughfare,
+                    address.locality,
+                    address.adminArea,
+                    address.postalCode
+                )
+            }
+            .first()
     }
 
+    /**
+     * On item selected
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (parent != null) {
             representativeViewModel.state.value = parent.getItemAtPosition(position).toString()
         }
     }
 
+    /**
+     * On nothing selected
+     *
+     * @param parent
+     */
     override fun onNothingSelected(parent: AdapterView<*>?) {
         //empty method
     }
 
+    /**
+     * Start location updates
+     *
+     */
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         if (isPermissionGranted()) {
@@ -238,6 +314,10 @@ class DetailFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    /**
+     * Stop location updates
+     *
+     */
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
