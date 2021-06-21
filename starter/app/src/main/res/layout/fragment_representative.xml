@@ -9,11 +9,6 @@
             type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
     </data>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <!-- TODO: Add motion scene to hide form on vertical scroll. -->
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id = "@+id/motion_layout"
         android:layout_height="match_parent"
@@ -93,6 +88,7 @@
             style="@style/PrimaryButton"
             android:text="@string/find_my_representatives"
             android:layout_width="match_parent"
+            android:stateListAnimator="@null"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/zip" />
 
@@ -100,6 +96,7 @@
             android:id="@+id/button_location"
             style="@style/PrimaryButton"
             android:text="@string/use_my_location"
+            android:stateListAnimator="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
@@ -132,22 +129,31 @@
             app:layout_constraintTop_toBottomOf="@id/representative_title"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/status_image_holder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/status_image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/loading_spinner"
-                android:translationZ="1000dp"
                 app:apiStatus="@{viewModel.apiStatus}"
                 motion:src="@drawable/loading_animation"
                 motion:visibility="visible" />
-        </LinearLayout>
-  </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+
 </layout>
